@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import utils
+import matplotlib.pyplot as plt
 
 from deap import algorithms
 from deap import base
@@ -11,22 +12,20 @@ from deap import tools
 
 # Primera fase
 
-# Cargamos los datos del retorno desde el CSV
-returns_data = pd.read_csv('./data/returns_data.csv')
-MU = returns_data.values[0]
+# Leemos los datos
+N, mean_returns, std_deviations, correlations = utils.parse_data("./data/port1.txt")
+MU = np.atleast_2d(mean_returns).T
+SIGMA = correlations
 
-N = len(MU)  # Numero de assets
-
-# Cargamos los datos del riesgo desde el CSV
-risk_data = pd.read_csv('./data/risk_data.csv')
-SIGMA = risk_data.values
+# Leemos solucion
+sol_returns, sol_variance = utils.parse_solution("./data/portef1.txt")
 
 # Hiperparametros del modelo
-GAMMA = 0.5             # Autovalor
+GAMMA = 0.5             # Ratio
 
 # Hiperparametros estrategia
-LAMBDA = 20*N           # Tamaño sampleo
-DT = 5.0             # Desviación típica
+LAMBDA = 20*(N-1)           # Tamaño sampleo
+DT = 5.0                    # Desviación típica
 CENTROID = np.random.rand(N)
 CENTROID = CENTROID / np.linalg.norm(CENTROID, 1)  # Tomamos como punto inicial un punto aleatorio de la superficie
 CENTROID = utils.proyection(CENTROID)  # Lo proyectamos obre el plano x1 = 0 para facilitar la expresion de las restricciones
@@ -36,13 +35,14 @@ CENTROID = utils.proyection(CENTROID)  # Lo proyectamos obre el plano x1 = 0 par
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMin)
 
-# Definimos la matriz cuadratica
-H = GAMMA * SIGMA - MU*MU.T
+# Definimos la matriz
+H = GAMMA * SIGMA - MU@MU.T
 
-# Definimos la funcion a optimizar:   GAMMA * w' * sigma * w - w' * mu * mu' * w
-def evaluate(w: np.array) -> float:
-    w = utils.map_to_sphere(w)
-    return GAMMA * w.T * SIGMA * w - w.T * MU * MU.T * w
+# Definimos la funcion a optimizar:   GAMMA * w' * sigma * w - w' * mu * mu' * w = w' * H * w
+def evaluate(ind):
+    w = utils.map_to_sphere(ind)
+    w = np.atleast_2d(w).T
+    return (w.T@H@w)[0]
 
 
 def distance(feasible_ind, original_ind):
@@ -58,29 +58,21 @@ def closest_feasible(individual):
 
 def valid(individual):
     """Determines if the individual is valid or not."""
-    if any(individual < np.zeros(len(individual))) or any(np.linalg.norm(np.array(individual),1) > 1):
+    if any(individual < np.zeros(len(individual))) or np.linalg.norm(np.array(individual),1) > 1:
         return False
     return True
 
-def close_valid(individual):
-    """Determines if the individual is close to valid."""
-    EPS_BOUND = np.ones(len(individual))*1e-5
-    if any(individual < -EPS_BOUND) or any(np.linalg.norm(np.array(individual),1) > 1+EPS_BOUND):
-        return False
-    return True
-
-# Definimos atributos e individuos
+# Definimos registramos la funcion a evaluar y añadimos la penalizacion para los individuos no factibles
 toolbox = base.Toolbox()
 toolbox.register("evaluate", evaluate)
 toolbox.decorate("evaluate", tools.ClosestValidPenalty(valid, closest_feasible, 1.0e+6, distance))
+
 
 def main():
     # The cma module uses the numpy random number generator
     np.random.seed(128)
 
     # The CMA-ES algorithm takes a population of one individual as argument
-    # The centroid is set to a vector of 5.0 see http://www.lri.fr/~hansen/cmaes_inmatlab.html
-    # for more details about the rastrigin and other tests for CMA-ES    
     strategy = cma.Strategy(centroid=CENTROID, sigma=DT, lambda_=LAMBDA)
     toolbox.register("generate", strategy.generate, creator.Individual)
     toolbox.register("update", strategy.update)
@@ -95,8 +87,25 @@ def main():
     # The CMA-ES algorithm converge with good probability with those settings
     algorithms.eaGenerateUpdate(toolbox, ngen=250, stats=stats, halloffame=hof)
 
-    print("Best individual is %s, %s" % (hof[0], hof[0].fitness.values))
-    return hof[0].fitness.values[0]
+    # print("Best individual is %s, %s" % (hof[0], hof[0].fitness.values))
+    return hof[0]
 
 if __name__ == "__main__":
-    main()
+    best_ind = main()
+    w = np.atleast_2d(utils.map_to_sphere(best_ind)).T
+    return_ = w.T@MU
+    variance = w.T@SIGMA@w
+    print("Mejor individuo: ", best_ind)
+    print("Retorno medio: ", return_)
+    print("Varianza: ", variance)
+
+    # Representamos los datos
+    scale = 1e2
+    plt.figure(figsize=(8, 6))
+    plt.scatter(return_*scale, variance*scale, color='b', marker='x')
+    plt.scatter(sol_returns*scale, sol_variance*scale, color='r', marker='o')
+    plt.title('Mean Return vs Variance of Return')
+    plt.xlabel('Variance of Return')
+    plt.ylabel('Mean Return')
+    plt.grid(True)
+    plt.show()
