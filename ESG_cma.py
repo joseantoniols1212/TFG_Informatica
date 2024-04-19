@@ -17,11 +17,14 @@ N, mean_returns, std_deviations, correlations = utils.parse_data("./data/port1.t
 MU = np.atleast_2d(mean_returns).T
 SIGMA = correlations
 
+print(MU[:3,:])
+print(SIGMA)
+
 # Leemos solucion
 sol_returns, sol_variance = utils.parse_solution("./data/portef1.txt")
 
 # Hiperparametros del modelo
-GAMMA = 0.5             # Ratio
+GAMMA = 0.025                 # Ratio
 
 # Hiperparametros estrategia
 LAMBDA = 20*(N-1)           # Tamaño sampleo
@@ -73,7 +76,7 @@ def main():
     np.random.seed(128)
 
     # The CMA-ES algorithm takes a population of one individual as argument
-    strategy = cma.Strategy(centroid=CENTROID, sigma=DT, lambda_=LAMBDA)
+    strategy = cma.Strategy(centroid=CENTROID, sigma=DT)
     toolbox.register("generate", strategy.generate, creator.Individual)
     toolbox.register("update", strategy.update)
 
@@ -84,10 +87,8 @@ def main():
     stats.register("min", np.min)
     stats.register("max", np.max)
 
-    # The CMA-ES algorithm converge with good probability with those settings
     algorithms.eaGenerateUpdate(toolbox, ngen=250, stats=stats, halloffame=hof)
 
-    # print("Best individual is %s, %s" % (hof[0], hof[0].fitness.values))
     return hof[0]
 
 if __name__ == "__main__":
@@ -95,17 +96,20 @@ if __name__ == "__main__":
     w = np.atleast_2d(utils.map_to_sphere(best_ind)).T
     return_ = w.T@MU
     variance = w.T@SIGMA@w
+    init_return = CENTROID
     print("Mejor individuo: ", best_ind)
     print("Retorno medio: ", return_)
     print("Varianza: ", variance)
+    print("Retorno individuo inicial: ", )
 
     # Representamos los datos
     scale = 1e2
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(50, 40))
     plt.scatter(return_*scale, variance*scale, color='b', marker='x')
     plt.scatter(sol_returns*scale, sol_variance*scale, color='r', marker='o')
     plt.title('Mean Return vs Variance of Return')
     plt.xlabel('Variance of Return')
     plt.ylabel('Mean Return')
     plt.grid(True)
+    plt.axis('equal')
     plt.show()

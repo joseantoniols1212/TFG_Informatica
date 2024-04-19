@@ -1,4 +1,6 @@
 import numpy as np
+from numpy import exp,arange
+from pylab import meshgrid,cm,imshow,contour,clabel,colorbar,axis,title,show
 
 def proyection(point: np.array):
     return point[1:]
