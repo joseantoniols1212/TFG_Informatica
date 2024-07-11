@@ -1,0 +1,12 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+Tech Mahindra Limited,India,18,BSE,TECHM.BO,89,71,50.0,71.43,76.8
+"Chugai Pharmaceutical Co., Ltd.",Japan,14,JPX,4519.T,88,74,50.0,71.43,57.4
+Owens Corning,United States,3,NYQ,OC,88,95,58.33,85.71,61.8
+Olympus Corporation,Japan,9,JPX,7733.T,72,82,58.33,42.86,47.4
+The GPT Group,Australia,15,ASX,GPT.AX,91,82,58.33,100.0,78.4
+HP Inc.,United States,19,NYQ,HPQ,88,80,75.0,85.71,78.4
+TotalEnergies SE,France,7,PAR,TTE.PA,77,82,58.33,71.43,45.4
+General Motors Company,United States,1,NYQ,GM,69,80,41.67,57.14,43.0
+"Host Hotels & Resorts, Inc.",United States,15,NMS,HST,73,86,41.67,71.43,73.4
+Hindalco Industries Limited,India,12,BSE,HINDALCO.BO,83,82,41.67,57.14,36.8
+"Samsung SDS Co.,Ltd.",Republic of Korea,18,KSC,018260.KS,85,70,33.33,71.43,63.6

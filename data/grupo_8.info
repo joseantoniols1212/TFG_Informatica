@@ -1,0 +1,12 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+"Grifols, S.A.",Spain,14,MCE,GRF.MC,66,75,50.0,57.14,63.8
+Newmont Corporation,United States,12,NYQ,NEM,83,88,58.33,85.71,59.0
+Swiss Re AG,Switzerland,11,EBS,SREN.SW,85,82,58.33,100.0,68.2
+Kia Corporation,Republic of Korea,1,KSC,000270.KS,65,75,33.33,28.57,51.0
+Companhia Energética de Minas Gerais,Brazil,22,SAO,CMIG3.SA,83,75,58.33,85.71,46.8
+"Fortinet, Inc.",United States,18,NMS,FTNT,57,62,41.67,71.43,62.2
+Hyundai Steel Company,Republic of Korea,12,KSC,004020.KS,77,78,33.33,28.57,31.2
+"CBRE Group, Inc.",United States,15,NYQ,CBRE,79,85,41.67,100.0,84.0
+Wesfarmers Limited,Australia,16,ASX,WES.AX,62,80,41.67,71.43,69.2
+Wipro Limited,India,18,BSE,WIPRO.BO,86,88,50.0,57.14,73.6
+SK Inc.,Republic of Korea,3,KSC,034730.KS,82,75,33.33,100.0,26.6

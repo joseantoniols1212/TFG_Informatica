@@ -1,5 +1,4 @@
 cro
-cma
 deap
-optuna
-cmaes
+numpy
+pandas

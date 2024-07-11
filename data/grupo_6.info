@@ -1,0 +1,12 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+"Samsung SDI Co., Ltd.",Republic of Korea,19,KSC,006400.KS,77,83,50.0,71.43,60.0
+"Daiichi Sankyo Company, Limited",Japan,14,JPX,4568.T,79,75,16.67,85.71,52.6
+Snap Inc.,United States,13,NYQ,SNAP,55,63,33.33,57.14,56.8
+Infineon Technologies AG,Germany,17,GER,IFX.DE,83,82,50.0,85.71,70.4
+Dexus,Australia,15,ASX,DXS.AX,89,93,50.0,100.0,86.4
+Petróleo Brasileiro S.A. - Petrobras,Brazil,7,SAO,PETR3.SA,62,78,33.33,42.86,30.4
+"Banco Bilbao Vizcaya Argentaria, S.A.",Spain,2,MCE,BBVA.MC,86,92,41.67,85.71,53.6
+"Nomura Research Institute, Ltd.",Japan,18,JPX,4307.T,85,68,50.0,100.0,69.0
+InterContinental Hotels Group PLC,United Kingdom,4,LSE ,IHG.L,56,83,50.0,85.71,61.6
+Falabella S.A.,Chile,16,SGO,FALABELLA.SN,71,80,25.0,57.14,61.0
+Allianz SE,Germany,11,FRA,ALV.F,89,92,50.0,85.71,73.4

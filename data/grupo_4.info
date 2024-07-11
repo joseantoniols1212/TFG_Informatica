@@ -1,0 +1,12 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+"VMware, Inc.",United States,18,NYQ,VMW,62,54,58.33,85.71,68.2
+Transurban Group,Australia,21,ASX,TCL.AX,76,80,41.67,100.0,82.4
+Kasikornbank Public Company Limited,Thailand,2,SET,KBANK.BK,86,68,25.0,85.71,58.2
+Leonardo S.p.a.,Italy,3,MIL,LDO.MI,87,88,41.67,85.71,50.0
+Fresenius Medical Care AG & Co. KGaA,Germany,9,FRA,FME.F,72,87,58.33,71.43,71.2
+Whirlpool Corporation,United States,4,NYQ,WHR,68,81,41.67,71.43,61.8
+"Agilent Technologies, Inc.",United States,14,NYQ,A,54,88,41.67,85.71,72.8
+"Nippon Prologis REIT, Inc.",Japan,15,JPX,3283.T,78,44,33.33,57.14,82.6
+"Rakuten Group, Inc.",Japan,16,JPX,4755.T,66,59,33.33,71.43,50.4
+"Nissin Foods Holdings Co.,Ltd.",Japan,8,JPX,2897.T,80,66,33.33,71.43,45.4
+Moody's Corporation,United States,6,NYQ,MCO,71,71,50.0,85.71,69.0

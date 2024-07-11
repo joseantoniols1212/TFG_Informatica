@@ -1,0 +1,12 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+British American Tobacco p.l.c.,United Kingdom,8,LSE ,BATS.L,85,87,41.67,57.14,34.0
+PTT Public Company Limited,Thailand,7,SET,PTT.BK,73,77,41.67,71.43,38.6
+Itaúsa S.A.,Brazil,2,SAO,ITSA3.SA,82,60,33.33,57.14,71.6
+Banco Bradesco S.A.,Brazil,2,SAO,BBDC3.SA,83,80,41.67,71.43,56.0
+AbbVie Inc.,United States,14,NYQ,ABBV,75,83,58.33,57.14,40.2
+Jacobs Solutions Inc.,United States,4,NYQ,J,76,87,50.0,71.43,53.8
+GSK plc,United Kingdom,14,LSE ,GSK.L,86,92,75.0,85.71,66.6
+CVS Health Corporation,United States,9,NYQ,CVS,76,92,41.67,71.43,56.0
+Hewlett Packard Enterprise Company,United States,19,NYQ,HPE,85,78,66.67,100.0,78.4
+Hana Financial Group Inc.,Republic of Korea,2,SAO,086790.KS,87,90,33.33,85.71,51.0
+Itaú Unibanco Holding S.A.,Brazil,2,SAO,ITUB3.SA,85,88,41.67,71.43,49.8

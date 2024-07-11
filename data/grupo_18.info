@@ -1,0 +1,12 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+"LG H&H Co., Ltd.",Republic of Korea,10,KSC,051900.KS,83,78,33.33,57.14,44.4
+Dassault Systèmes SE,France,18,PAR,DSY.PA,67,72,50.0,85.71,63.0
+UnitedHealth Group Incorporated,United States,9,NYQ,UNH,79,77,50.0,85.71,69.4
+Moncler S.p.A.,Italy,4,MIL,MONC.MI,91,86,41.67,71.43,79.8
+Publicis Groupe S.A.,France,13,PAR,PUB.PA,62,85,50.0,71.43,79.4
+Deutsche Post AG,Germany,21,GER,DHL.DE,71,79,50.0,85.71,69.6
+Pearson plc,United Kingdom,13,LSE ,PSON.L,60,82,58.33,85.71,88.0
+Assicurazioni Generali S.p.A.,Italy,11,MIL,G.MI,90,94,50.0,100.0,64.6
+Rolls-Royce Holdings plc,United Kingdom,3,LSE ,RR.L,71,76,41.67,71.43,50.4
+"Autodesk, Inc.",United States,18,NMS,ADSK,61,81,50.0,100.0,66.4
+"Industria de Diseño Textil, S.A.",Spain,16,MCE,ITX.MC,73,82,66.67,85.71,75.0

@@ -21,9 +21,9 @@ L = 100
 ke = 0.2
 # ------------------------------------------------------
 
-cro = CRO(Ngen, N, M, Fb, Fa, Fd, r0, k, Pd,
+algorithm_cro = CRO(Ngen, N, M, Fb, Fa, Fd, r0, k, Pd,
           max_ones, opt, L, verbose=False, ke=ke)
 
-(REEF, REEFpob, REEFfitness, ind_best, Bestfitness, Meanfitness) = cro.fit()
+(REEF, REEFpob, REEFfitness, ind_best, Bestfitness, Meanfitness) = algorithm_cro.fit()
 
-plot_results(Bestfitness, Meanfitness, cro)
+plot_results(Bestfitness, Meanfitness, algorithm_cro)

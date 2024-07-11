@@ -1,0 +1,12 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+ANA Holdings Inc.,Japan,21,JPX,9202.T,76,79,33.33,71.43,36.2
+"Waste Management, Inc.",United States,4,NYQ,WM,75,85,58.33,71.43,66.8
+Elevance Health Inc.,United States,9,NYQ,ELV,70,88,58.33,85.71,77.2
+LIXIL Corporation,Japan,3,JPX,5938.T,82,85,41.67,85.71,62.6
+"Illumina, Inc.",United States,14,NMS,ILMN,75,69,41.67,85.71,62.8
+Bureau Veritas SA,France,4,PAR,BVI.PA,85,80,50.0,85.71,79.8
+S-Oil Corporation,Republic of Korea,7,KSC,010955.KS,86,82,33.33,42.86,34.4
+"Ajinomoto Co., Inc.",Japan,8,JPX,2802.T,76,83,33.33,85.71,45.6
+Microsoft Corporation,United States,18,NMS,MSFT ,56,90,58.33,100.0,69.8
+SGS SA,Switzerland,4,BER,SUVA.BE,87,86,58.33,100.0,63.0
+Engie SA,France,22,PAR,ENGI.PA,81,82,58.33,71.43,40.8
