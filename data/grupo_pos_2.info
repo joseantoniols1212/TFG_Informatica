@@ -1,0 +1,11 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+Itaú Unibanco Holding S.A.,Brazil,2,SAO,ITUB3.SA,85,88,41.67,71.43,49.8
+Vicinity Centres,Australia,15,ASX,VCX.AX,80,74,58.33,85.71,82.6
+POSCO Holdings Inc.,Republic of Korea,12,KSC,005490.KS,72,86,41.67,57.14,31.8
+Z Holdings Corporation,Japan,13,JPX,7550.T,62,65,50.0,100.0,57.0
+"Banco Bilbao Vizcaya Argentaria, S.A.",Spain,2,MCE,BBVA.MC,86,92,41.67,85.71,53.6
+Owens Corning,United States,3,NYQ,OC,88,95,58.33,85.71,61.8
+"Shiseido Company, Limited",Japan,10,JPX,4911.T,81,78,41.67,71.43,48.6
+CapitaLand Investment Limited,Singapore,15,SES,9CI.SI,79,46,50.0,100.0,73.8
+"Banco Santander, S.A.",Spain,2,MCE,SAN.MC,83,93,33.33,85.71,53.6
+OMV Aktiengesellschaft,Austria,7,VIE,OMV.VI,73,84,58.33,100.0,38.4

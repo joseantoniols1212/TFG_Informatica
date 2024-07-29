@@ -1,0 +1,11 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+Canadian National Railway Company,Canada,21,TOR,CNR.TO,81,74,58.33,85.71,72.0
+"Galp Energia, SGPS, S.A.",Portugal,7,LIS,GALP.LS,82,74,58.33,100.0,50.6
+"Mitsubishi Estate Co., Ltd.",Japan,15,JPX,8802.T,72,72,33.33,71.43,66.2
+Swire Properties Limited,Hong Kong,15,HKG,1972.HK,83,68,50.0,100.0,78.4
+Kasikornbank Public Company Limited,Thailand,2,SET,KBANK.BK,86,68,25.0,85.71,58.2
+Hindalco Industries Limited,India,12,BSE,HINDALCO.BO,83,82,41.67,57.14,36.8
+"Nissin Foods Holdings Co.,Ltd.",Japan,8,JPX,2897.T,80,66,33.33,71.43,45.4
+"Ono Pharmaceutical Co., Ltd.",Japan,14,JPX,4528.T,79,74,50.0,85.71,48.6
+Hess Corporation,United States,7,NYQ,HES,72,81,50.0,100.0,33.8
+Sodexo S.A.,France,5,PAR,SW.PA,69,79,33.33,57.14,55.2

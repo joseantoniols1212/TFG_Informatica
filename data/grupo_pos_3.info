@@ -1,0 +1,11 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+Cigna Corporation,United States,9,NYQ,CI,77,80,58.33,85.71,71.6
+Engie SA,France,22,PAR,ENGI.PA,81,82,58.33,71.43,40.8
+TotalEnergies SE,France,7,PAR,TTE.PA,77,82,58.33,71.43,45.4
+Woodside Energy Group Ltd,Australia,7,ASX,WDS.AX,74,74,50.0,100.0,38.2
+Hewlett Packard Enterprise Company,United States,19,NYQ,HPE,85,78,66.67,100.0,78.4
+"Mondelez International, Inc.",United States,8,NMS,MDLZ,74,79,41.67,71.43,56.0
+National Australia Bank Limited,Australia,2,ASX,NAB.AX,84,87,41.67,71.43,59.4
+Delta Electronics (Thailand) Public Company Limited,Thailand,19,SET,DELTA.BK,74,91,58.33,85.71,60.4
+S-Oil Corporation,Republic of Korea,7,KSC,010955.KS,86,82,33.33,42.86,34.4
+Amgen Inc.,United States,14,NMS,AMGN,54,76,58.33,85.71,56.0

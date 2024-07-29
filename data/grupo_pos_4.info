@@ -1,0 +1,11 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+Publicis Groupe S.A.,France,13,PAR,PUB.PA,62,85,50.0,71.43,79.4
+Novartis AG,Switzerland,14,EBS,NOVN.SW,80,86,66.67,85.71,67.6
+CP ALL Public Company Limited,Thailand,8,SET,CPALL.BK,87,61,33.33,71.43,56.2
+"Agilent Technologies, Inc.",United States,14,NYQ,A,54,88,41.67,85.71,72.8
+ITOCHU Corporation,Japan,3,JPX,8001.T,73,62,33.33,100.0,58.2
+Lockheed Martin Corporation,United States,3,NYQ,LMT,69,71,41.67,85.71,40.8
+AstraZeneca PLC,United Kingdom,14,LSE ,AZN.L,80,96,66.67,85.71,56.4
+Pearson plc,United Kingdom,13,LSE ,PSON.L,60,82,58.33,85.71,88.0
+Prysmian S.p.A.,Italy,3,MIL,PRY.MI,87,75,50.0,85.71,67.0
+Elevance Health Inc.,United States,9,NYQ,ELV,70,88,58.33,85.71,77.2

@@ -1,0 +1,11 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+UnitedHealth Group Incorporated,United States,9,NYQ,UNH,79,77,50.0,85.71,69.4
+Komatsu Ltd.,Japan,3,JPX,6301.T,78,88,58.33,85.71,52.6
+"CaixaBank, S.A.",Spain,2,MCE,CABK.MC,80,84,41.67,71.43,65.4
+"The Williams Companies, Inc.",United States,7,NYQ,WMB,70,71,50.0,57.14,56.4
+ANA Holdings Inc.,Japan,21,JPX,9202.T,76,79,33.33,71.43,36.2
+WH Smith PLC,United Kingdom,16,LSE ,SMWH.L,72,85,50.0,71.43,76.6
+"Gilead Sciences, Inc.",United States,14,NMS,GILD,61,81,41.67,85.71,54.0
+Wilmar International Limited,Singapore,8,SES,F34.SI,75,71,25.0,71.43,34.0
+Coca-Cola Europacific Partners PLC,United Kingdom,8,LSE ,CCEP.L,84,84,50.0,100.0,72.2
+Hana Financial Group Inc.,Republic of Korea,2,SAO,086790.KS,87,90,33.33,85.71,51.0

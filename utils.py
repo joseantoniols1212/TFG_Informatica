@@ -1,53 +1,49 @@
 import numpy as np
-from numpy import exp,arange
-from pylab import meshgrid,cm,imshow,contour,clabel,colorbar,axis,title,show
-
-def proyection(point: np.array):
-    return point[1:]
+import pandas as pd
 
 
-def map_to_sphere(point: np.array) -> np.array:
-    first_cordinate = 1-sum(point)
-    return np.append([first_cordinate], point)
+DATAFILES_PATH = "./data/"
+DATAFILE_PREFIX = "grupo_pos_"
+RETURN_DATAFILE_EXTENSION = ".csv"
+ESG_DATAFILE_EXTENSION = ".info"
 
-# Function to parse the data file
-def parse_data(filename):
-    with open(filename, 'r') as file:
-        lines = file.readlines()
-    
-    # Extract number of assets
-    num_assets = int(lines[0])
-    
-    # Initialize arrays
-    mean_returns = np.zeros(num_assets)
-    std_deviations = np.zeros(num_assets)
-    correlations = np.zeros((num_assets, num_assets))
-    
-    # Parse mean returns and standard deviations
-    for i in range(1, num_assets + 1):
-        mean_returns[i - 1], std_deviations[i - 1] = map(float, lines[i].split())
-    
-    # Parse correlations
-    for line in lines[num_assets + 1:]:
-        i, j, corr = map(float, line.split())
-        correlations[int(i) - 1, int(j) - 1] = corr
-        correlations[int(j) - 1, int(i) - 1] = corr  # Since correlation matrix is symmetric
-    
-    return num_assets, mean_returns, std_deviations, correlations
 
-# Function to parse the solution file
-def parse_solution(filename):
-    print(filename)
-    with open(filename, 'r') as file:
-        lines = file.readlines()
+def get_data(datafile_path: str):
+    """"Returns risk and mean returns of a data file by path."""
+    ret_data = pd.read_csv(datafile_path+RETURN_DATAFILE_EXTENSION)
+    # Drop the first column containing date
+    ret_data = ret_data.drop(columns=['Unnamed: 0'])
+    risk_matrix = ret_data.cov()
+    mean_returns = ret_data.mean()
+    esg_data = pd.read_csv(datafile_path+".info")
+    esg_data = esg_data.drop(esg_data.columns[[0, 1, 2, 3, 4]], axis=1)
+    return risk_matrix.values, mean_returns.values, esg_data.values
 
-    # Initialize arrays
-    num_points = len(lines)
-    return_ = np.zeros(num_points)
-    variance = np.zeros(num_points)
 
-    print(num_points)
-    for i in range(num_points):
-        return_[i], variance[i] = map(float, lines[i].split())
-    
-    return return_, variance
+def get_data_by_index(index: int):
+    """Returns risk and mean returns of a data file by index."""
+    datafile_path = DATAFILES_PATH+DATAFILE_PREFIX+str(index)
+    ret_data = pd.read_csv(datafile_path+".csv")
+    # Drop the first column containing date
+    ret_data = ret_data.drop(columns=['Unnamed: 0'])
+    esg_data = pd.read_csv(datafile_path+".info")
+    esg_data = esg_data.drop(esg_data.columns[[0, 1, 2, 3, 4]], axis=1)
+    risk_matrix = ret_data.cov()
+    mean_returns = ret_data.mean()
+    return risk_matrix.values, mean_returns.values, esg_data.values
+
+
+def map_from_auxiliary_coordinates(x):
+    z = 1 - np.sum(x)
+    return np.append(x, z)
+
+
+def map_to_auxiliary_coordinates(x):
+    return x[:-1]
+
+
+if __name__ == "__main__":
+    risk, ret, esg = get_data_by_index(0)
+    print("Risk: \n", risk)
+    print("Return: \n", ret)
+    print("ESG: \n", esg)

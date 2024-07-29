@@ -1,0 +1,11 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+Fortescue Metals Group Limited,Australia,12,CXA,FMG.XA,76,77,50.0,85.71,56.0
+Sands China Ltd.,China,5,HKG,1928.HK,19,86,66.67,71.43,62.2
+Yokogawa Electric Corporation,Japan,19,JPX,6841.T,78,80,50.0,85.71,74.8
+AbbVie Inc.,United States,14,NYQ,ABBV,75,83,58.33,57.14,40.2
+PETRONAS Chemicals Group Berhad,Malaysia,12,KLS,5183.KL,79,66,33.33,28.57,54.8
+"Daiichi Sankyo Company, Limited",Japan,14,JPX,4568.T,79,75,16.67,85.71,52.6
+The Hershey Company,United States,8,NYQ,HSY,70,89,41.67,71.43,56.0
+Companhia Energética de Minas Gerais,Brazil,22,SAO,CMIG3.SA,83,75,58.33,85.71,46.8
+Biogen Inc.,United States,14,NMS,BIIB,71,79,58.33,85.71,55.6
+"Yum China Holdings, Inc.",China,5,HKG,9987.HK,74,91,33.33,85.71,61.0

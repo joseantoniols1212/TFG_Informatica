@@ -1,0 +1,11 @@
+Company,Location,Industry_gr,Market ,TICKER,S&P-ESG,R-ESG,ISS-ESG-AR,MSCI-ESG-AR,SUST-ESG RISK*-AR
+Keppel Corporation Limited,Singapore,3,SES,BN4.SI,77,72,33.33,100.0,20.4
+"Sumitomo Forestry Co., Ltd.",Japan,4,JPX,1911.T,83,75,41.67,71.43,70.0
+Brambles Limited,Australia,4,ASX,BXB.AX,81,79,58.33,100.0,73.6
+Linde plc,United Kingdom,12,LSE ,0M2B.L,81,92,50.0,71.43,51.4
+"Iberdrola, S.A.",Spain,22,MCE,IBE.MC,87,85,58.33,100.0,56.2
+Informa plc,United Kingdom,13,LSE ,INF.L,79,70,50.0,85.71,79.6
+Deutsche Börse AG,Germany,6,GER,DB1.DE,79,75,41.67,100.0,76.0
+Leonardo S.p.a.,Italy,3,MIL,LDO.MI,87,88,41.67,85.71,50.0
+"Mitsui & Co., Ltd.",Japan,3,JPX,8031.T,70,75,41.67,71.43,66.6
+AXA SA,France,11,PAR,CS.PA,91,81,50.0,100.0,67.2

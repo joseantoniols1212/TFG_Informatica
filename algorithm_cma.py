@@ -1,82 +1,61 @@
 import numpy as np
-import pandas as pd
-import utils
-import matplotlib.pyplot as plt
+from utils import get_data_by_index, \
+    map_from_auxiliary_coordinates, map_to_auxiliary_coordinates
 
 from deap import algorithms
 from deap import base
-from deap import benchmarks
 from deap import cma
 from deap import creator
 from deap import tools
 
-# Primera fase
 
-# Leemos los datos
-N, mean_returns, std_deviations, correlations = utils.parse_data("./data/port1.txt")
-MU = np.atleast_2d(mean_returns).T
-SIGMA = correlations
+def algorithm_cma(sigma, mu, esg,
+                  lambda_, dt, penalization_weight, ngen, verbose):
 
-print(MU[:3,:])
-print(SIGMA)
+    n = mu.size
+    mu = np.atleast_2d(mu).T
+    centroid = np.random.rand(n)
+    centroid = centroid / np.linalg.norm(centroid, 1)
+    centroid = map_to_auxiliary_coordinates(centroid)
+    centroid = np.append(centroid, np.random.rand())
 
-# Leemos solucion
-sol_returns, sol_variance = utils.parse_solution("./data/portef1.txt")
+    # We define problem class
+    # Minimization
+    creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+    creator.create("Individual", list, fitness=creator.FitnessMin)
 
-# Hiperparametros del modelo
-GAMMA = 0.025                 # Ratio
+    # We define evaluation matrix
+    def eval_matrix(gamma):
+        return gamma * sigma - mu@mu.T
 
-# Hiperparametros estrategia
-LAMBDA = 20*(N-1)           # Tamaño sampleo
-DT = 5.0                    # Desviación típica
-CENTROID = np.random.rand(N)
-CENTROID = CENTROID / np.linalg.norm(CENTROID, 1)  # Tomamos como punto inicial un punto aleatorio de la superficie
-CENTROID = utils.proyection(CENTROID)  # Lo proyectamos obre el plano x1 = 0 para facilitar la expresion de las restricciones
+    def penalization(ind):
+        """ Penalizes portfolios not summing up to one."""
+        w = ind
+        norm = np.linalg.norm(w, 1)
+        penalization = 0
+        if norm > 1:
+            penalization += penalization_weight * norm
+        for x in w:
+            if x < 0:
+                penalization += penalization_weight * (-x)
+        return penalization
 
+    def evaluate(ind):
+        w = ind[:-1]
+        gamma = ind[-1]
+        p = penalization(w)
+        w = map_from_auxiliary_coordinates(w)
+        w = np.atleast_2d(w).T
+        h = eval_matrix(gamma)
+        res = (w.T@h@w)[0]
+        return abs(res) + p
+        # return np.pow(res, 2) + p
 
-# Definimos la clase de problema
-creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-creator.create("Individual", list, fitness=creator.FitnessMin)
-
-# Definimos la matriz
-H = GAMMA * SIGMA - MU@MU.T
-
-# Definimos la funcion a optimizar:   GAMMA * w' * sigma * w - w' * mu * mu' * w = w' * H * w
-def evaluate(ind):
-    w = utils.map_to_sphere(ind)
-    w = np.atleast_2d(w).T
-    return (w.T@H@w)[0]
-
-
-def distance(feasible_ind, original_ind):
-    """A distance function to the feasibility region."""
-    return sum((f - o)**2 for f, o in zip(feasible_ind, original_ind))
-
-def closest_feasible(individual):
-    """A function returning a valid individual from an invalid one."""
-    feasible_ind = np.array(individual)
-    feasible_ind = np.maximum(0, feasible_ind)
-    feasible_ind = feasible_ind / np.linalg.norm(feasible_ind, 1)
-    return feasible_ind
-
-def valid(individual):
-    """Determines if the individual is valid or not."""
-    if any(individual < np.zeros(len(individual))) or np.linalg.norm(np.array(individual),1) > 1:
-        return False
-    return True
-
-# Definimos registramos la funcion a evaluar y añadimos la penalizacion para los individuos no factibles
-toolbox = base.Toolbox()
-toolbox.register("evaluate", evaluate)
-toolbox.decorate("evaluate", tools.ClosestValidPenalty(valid, closest_feasible, 1.0e+6, distance))
-
-
-def main():
-    # The cma module uses the numpy random number generator
-    np.random.seed(128)
-
+    # We register the evaluation function
+    toolbox = base.Toolbox()
+    toolbox.register("evaluate", evaluate)
     # The CMA-ES algorithm takes a population of one individual as argument
-    strategy = cma.Strategy(centroid=CENTROID, sigma=DT)
+    strategy = cma.Strategy(centroid=centroid, sigma=dt, lambda_=lambda_(n))
     toolbox.register("generate", strategy.generate, creator.Individual)
     toolbox.register("update", strategy.update)
 
@@ -87,29 +66,43 @@ def main():
     stats.register("min", np.min)
     stats.register("max", np.max)
 
-    algorithms.eaGenerateUpdate(toolbox, ngen=250, stats=stats, halloffame=hof)
+    algorithms.eaGenerateUpdate(
+        toolbox, ngen=ngen, stats=stats, halloffame=hof, verbose=verbose)
 
-    return hof[0]
+    w_p = hof[0][:-1]
+    w_p = map_from_auxiliary_coordinates(w_p)
+    gamma_0 = hof[0][-1]
+
+    index_max = np.argmax(w_p.T@esg)
+
+    w_s = np.zeros(n)
+    w_s[index_max] = 1
+
+    return w_p, w_s, gamma_0
+
 
 if __name__ == "__main__":
-    best_ind = main()
-    w = np.atleast_2d(utils.map_to_sphere(best_ind)).T
-    return_ = w.T@MU
-    variance = w.T@SIGMA@w
-    init_return = CENTROID
-    print("Mejor individuo: ", best_ind)
-    print("Retorno medio: ", return_)
-    print("Varianza: ", variance)
-    print("Retorno individuo inicial: ", )
 
-    # Representamos los datos
-    scale = 1e2
-    plt.figure(figsize=(50, 40))
-    plt.scatter(return_*scale, variance*scale, color='b', marker='x')
-    plt.scatter(sol_returns*scale, sol_variance*scale, color='r', marker='o')
-    plt.title('Mean Return vs Variance of Return')
-    plt.xlabel('Variance of Return')
-    plt.ylabel('Mean Return')
-    plt.grid(True)
-    plt.axis('equal')
-    plt.show()
+    sigma, mu, esg = get_data_by_index(0)
+
+    def lambda_(n):
+        return 20*n
+
+    dt = 1.0
+    penalization_weight = 100
+    ngen = 100
+
+    w_p, w_s, gamma_0 = algorithm_cma(sigma, mu, esg, lambda_,
+                                      dt, penalization_weight, ngen, True)
+
+    return_ = w_p.T@mu
+    risk = w_p.T@sigma@w_p
+    fitness = w_p.T@(gamma_0 * sigma - mu@mu.T)@w_p
+
+    print("Portfolio optimo: ", w_p)
+    print("Retorno: ", return_)
+    print("Riesgo: ", risk)
+    print("Norma portfolio:", np.linalg.norm(w_p, 1))
+    print("Gamma_0: ", gamma_0)
+    print("Fitness: ", fitness)
+    print("Vector esg: ", w_s)
