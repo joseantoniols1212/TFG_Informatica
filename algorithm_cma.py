@@ -54,6 +54,7 @@ def algorithm_cma(sigma, mu, esg,
     # We register the evaluation function
     toolbox = base.Toolbox()
     toolbox.register("evaluate", evaluate)
+
     # The CMA-ES algorithm takes a population of one individual as argument
     strategy = cma.Strategy(centroid=centroid, sigma=dt, lambda_=lambda_(n))
     toolbox.register("generate", strategy.generate, creator.Individual)
@@ -93,7 +94,7 @@ if __name__ == "__main__":
     ngen = 100
 
     w_p, w_s, gamma_0 = algorithm_cma(sigma, mu, esg, lambda_,
-                                      dt, penalization_weight, ngen, True)
+                                      dt, penalization_weight, ngen, False)
 
     return_ = w_p.T@mu
     risk = w_p.T@sigma@w_p
