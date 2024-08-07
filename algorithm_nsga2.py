@@ -14,7 +14,7 @@ from deap import tools
 def algorithm_nsga2(sigma, mu, esg,
                     penalization_weight, ngen):
 
-    n = mu.size
+    (n, m) = esg.shape
     mu = np.atleast_2d(mu).T
     centroid = np.random.rand(n)
     centroid = centroid / np.linalg.norm(centroid, 1)
@@ -119,7 +119,7 @@ def algorithm_nsga2(sigma, mu, esg,
 
     index_max = np.argmax(w_p.T@esg)
 
-    w_s = np.zeros(n)
+    w_s = np.zeros(m)
     w_s[index_max] = 1
 
     return w_p, w_s, gamma_0

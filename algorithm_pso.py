@@ -14,7 +14,7 @@ from deap import tools
 
 def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, ngen):
     
-    n = mu.size
+    (n, m) = esg.shape
     mu = np.atleast_2d(mu).T
     population_size = 10
 
@@ -115,7 +115,7 @@ def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, ngen):
 
     index_max = np.argmax(w_p.T@esg)
 
-    w_s = np.zeros(n)
+    w_s = np.zeros(m)
     w_s[index_max] = 1
 
     return w_p, w_s, gamma_0
@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
     sigma, mu, esg = get_data_by_index(0)
 
-    w_p, w_s, gamma_0 = algorithm_pso(sigma, mu, esg, 0.1, 1000, 200)
+    w_p, w_s, gamma_0 = algorithm_pso(sigma, mu, esg, 0.1, 1000, 200) # TODO: Añadir phi1 y phi2
 
     return_ = w_p.T@mu
     risk = w_p.T@sigma@w_p
