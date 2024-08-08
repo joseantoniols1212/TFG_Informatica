@@ -5,7 +5,6 @@ import array
 from utils import get_data_by_index, \
     map_from_auxiliary_coordinates, map_to_auxiliary_coordinates
 
-from deap import algorithms
 from deap import base
 from deap import creator
 from deap import tools
@@ -115,30 +114,15 @@ def algorithm_nsga2(sigma, mu, esg,
     pop.sort(key=lambda x: x.fitness.values)
     w_p = pop[0][:-1]
     w_p = map_from_auxiliary_coordinates(w_p)
-    gamma_0 = pop[0][-1]
+    # gamma_0 = pop[0][-1]
 
     index_max = np.argmax(w_p.T@esg)
 
     w_s = np.zeros(m)
     w_s[index_max] = 1
 
-    return w_p, w_s, gamma_0
+    return w_p, w_s
 
 
 if __name__ == "__main__":
-
-    sigma, mu, esg = get_data_by_index(0)
-
-    w_p, w_s, gamma_0 = algorithm_nsga2(sigma, mu, esg, 1000, 100)
-
-    return_ = w_p.T@mu
-    risk = w_p.T@sigma@w_p
-    fitness = w_p.T@(gamma_0 * sigma - mu@mu.T)@w_p
-
-    print("Portfolio optimo: ", w_p)
-    print("Retorno: ", return_)
-    print("Riesgo: ", risk)
-    print("Norma portfolio:", np.linalg.norm(w_p, 1))
-    print("Gamma_0: ", gamma_0)
-    print("Fitness: ", fitness)
-    print("Vector esg: ", w_s)
+    pass

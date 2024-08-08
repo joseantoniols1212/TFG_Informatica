@@ -7,20 +7,19 @@ import random
 import math
 
 from deap import base
-from deap import benchmarks
 from deap import creator
 from deap import tools
 
 
-def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, ngen):
-    
+def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, phi1, phi2, ngen):
+
     (n, m) = esg.shape
     mu = np.atleast_2d(mu).T
     population_size = 10
 
     creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-    creator.create("Particle", np.ndarray, fitness=creator.FitnessMin, speed=list, best=None)
-
+    creator.create("Particle", np.ndarray,
+                   fitness=creator.FitnessMin, speed=list, best=None)
 
     def generate(size):
         centroid = np.random.rand(size)
@@ -28,11 +27,11 @@ def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, ngen):
         centroid = map_to_auxiliary_coordinates(centroid)
         centroid = np.append(centroid, np.random.rand())
         part = creator.Particle(centroid)
-        part.speed = [random.uniform(-abs_speed_max, abs_speed_max) for _ in range(size)]
+        part.speed = [random.uniform(-abs_speed_max, abs_speed_max)
+                      for _ in range(size)]
         part.smin = -abs_speed_max
         part.smax = abs_speed_max
         return part
-
 
     def updateParticle(part, best, phi1, phi2):
         u1 = (random.uniform(0, phi1) for _ in range(len(part)))
@@ -40,7 +39,7 @@ def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, ngen):
         v_u1 = map(operator.mul, u1, map(operator.sub, part.best, part))
         v_u2 = map(operator.mul, u2, map(operator.sub, best, part))
         part.speed = list(map(operator.add, part.speed,
-                        map(operator.add, v_u1, v_u2)))
+                              map(operator.add, v_u1, v_u2)))
         for i, speed in enumerate(part.speed):
             if abs(speed) < part.smin:
                 part.speed[i] = math.copysign(part.smin, speed)
@@ -77,18 +76,11 @@ def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, ngen):
     toolbox = base.Toolbox()
     toolbox.register("particle", generate, size=n)
     toolbox.register("population", tools.initRepeat, list, toolbox.particle)
-    toolbox.register("update", updateParticle, phi1=2.0, phi2=2.0)  # TODO: Revisar phi
+    toolbox.register("update", updateParticle, phi1=2.0,
+                     phi2=2.0)  # TODO: Revisar phi
     toolbox.register("evaluate", evaluate)
 
     pop = toolbox.population(n=population_size)
-    stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("avg", np.mean)
-    stats.register("std", np.std)
-    stats.register("min", np.min)
-    stats.register("max", np.max)
-
-    logbook = tools.Logbook()
-    logbook.header = ["gen", "evals"] + stats.fields
 
     GEN = ngen
     best = None
@@ -105,27 +97,24 @@ def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, ngen):
         for part in pop:
             toolbox.update(part, best)
 
-        # Gather all the fitnesses in one list and print the stats
-        logbook.record(gen=g, evals=len(pop), **stats.compile(pop))
-        print(logbook.stream)
-
     w_p = best[:-1]
     w_p = map_from_auxiliary_coordinates(w_p)
-    gamma_0 = best[-1]
+    # gamma_0 = best[-1]
 
     index_max = np.argmax(w_p.T@esg)
 
     w_s = np.zeros(m)
     w_s[index_max] = 1
 
-    return w_p, w_s, gamma_0
-    
+    return w_p, w_s
+
 
 if __name__ == "__main__":
 
     sigma, mu, esg = get_data_by_index(0)
 
-    w_p, w_s, gamma_0 = algorithm_pso(sigma, mu, esg, 0.1, 1000, 200) # TODO: Añadir phi1 y phi2
+    w_p, w_s, gamma_0 = algorithm_pso(
+        sigma, mu, esg, 0.1, 1000, 200, phi1=2.0, phi2=2.0)
 
     return_ = w_p.T@mu
     risk = w_p.T@sigma@w_p

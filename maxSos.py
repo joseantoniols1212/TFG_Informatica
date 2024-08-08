@@ -1,6 +1,5 @@
 import numpy as np
-from utils import get_data_by_index, \
-    map_from_auxiliary_coordinates, map_to_auxiliary_coordinates
+from utils import get_data_by_index, map_from_auxiliary_coordinates
 
 from deap import algorithms
 from deap import base
@@ -8,7 +7,8 @@ from deap import cma
 from deap import creator
 from deap import tools
 
-def maxSos(esg, penalization_weight, dt, ngen, verbose):
+
+def maxSos(sigma, mu, esg, penalization_weight, dt, ngen):
     (n, m) = esg.shape
     w_s = np.random.rand(m-1)
     w_s = w_s / np.linalg.norm(w_s, 1)
@@ -39,7 +39,7 @@ def maxSos(esg, penalization_weight, dt, ngen, verbose):
             if x < 0:
                 penalization += penalization_weight * (-x)
         return penalization
-    
+
     def evaluate(ind):
         w = ind
         w_p = w[:n-1]
@@ -58,7 +58,6 @@ def maxSos(esg, penalization_weight, dt, ngen, verbose):
     toolbox.register("generate", strategy.generate, creator.Individual)
     toolbox.register("update", strategy.update)
 
-
     hof = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     stats.register("avg", np.mean)
@@ -67,7 +66,7 @@ def maxSos(esg, penalization_weight, dt, ngen, verbose):
     stats.register("max", np.max)
 
     algorithms.eaGenerateUpdate(
-        toolbox, ngen=ngen, stats=stats, halloffame=hof, verbose=verbose)
+        toolbox, ngen=ngen, stats=stats, halloffame=hof, verbose=False)
 
     w_p = hof[0][:n-1]
     w_p = map_from_auxiliary_coordinates(w_p)
@@ -90,5 +89,5 @@ if __name__ == "__main__":
     print("Retorno: ", return_)
     print("Riesgo: ", risk)
     print("ESG rating: ", esg_rating)
-    print("Norma w_p:", np.linalg.norm(w_p,1))
-    print("Norma w_s:", np.linalg.norm(w_s,1))
+    print("Norma w_p:", np.linalg.norm(w_p, 1))
+    print("Norma w_s:", np.linalg.norm(w_s, 1))
