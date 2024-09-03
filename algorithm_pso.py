@@ -11,15 +11,16 @@ from deap import creator
 from deap import tools
 
 
-def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, phi1, phi2, ngen):
+creator.create("FitnessMinPSO", base.Fitness, weights=(-1.0,))
+creator.create("Particle", np.ndarray,
+               fitness=creator.FitnessMinPSO, speed=list, best=None)
+
+
+def algorithm_pso(sigma, mu, esg, pop_size, abs_speed_max, penalization_weight, phi1, phi2, ngen):
 
     (n, m) = esg.shape
     mu = np.atleast_2d(mu).T
-    population_size = 10
-
-    creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-    creator.create("Particle", np.ndarray,
-                   fitness=creator.FitnessMin, speed=list, best=None)
+    population_size = pop_size
 
     def generate(size):
         centroid = np.random.rand(size)
@@ -110,20 +111,4 @@ def algorithm_pso(sigma, mu, esg, abs_speed_max, penalization_weight, phi1, phi2
 
 
 if __name__ == "__main__":
-
-    sigma, mu, esg = get_data_by_index(0)
-
-    w_p, w_s, gamma_0 = algorithm_pso(
-        sigma, mu, esg, 0.1, 1000, 200, phi1=2.0, phi2=2.0)
-
-    return_ = w_p.T@mu
-    risk = w_p.T@sigma@w_p
-    fitness = w_p.T@(gamma_0 * sigma - mu@mu.T)@w_p
-
-    print("Portfolio optimo: ", w_p)
-    print("Retorno: ", return_)
-    print("Riesgo: ", risk)
-    print("Norma portfolio:", np.linalg.norm(w_p, 1))
-    print("Gamma_0: ", gamma_0)
-    print("Fitness: ", fitness)
-    print("Vector esg: ", w_s)
+    pass

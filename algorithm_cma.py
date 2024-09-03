@@ -1,12 +1,18 @@
 import numpy as np
 from utils import get_data_by_index, \
     map_from_auxiliary_coordinates, map_to_auxiliary_coordinates
+from metrics import *
 
 from deap import algorithms
 from deap import base
 from deap import cma
 from deap import creator
 from deap import tools
+
+# We define problem class
+# Minimization
+creator.create("FitnessMinCMA", base.Fitness, weights=(-1.0,))
+creator.create("IndividualCMA", list, fitness=creator.FitnessMinCMA)
 
 
 def algorithm_cma(sigma, mu, esg, dt, penalization_weight, ngen):
@@ -17,11 +23,6 @@ def algorithm_cma(sigma, mu, esg, dt, penalization_weight, ngen):
     centroid = centroid / np.linalg.norm(centroid, 1)
     centroid = map_to_auxiliary_coordinates(centroid)
     centroid = np.append(centroid, np.random.rand())
-
-    # We define problem class
-    # Minimization
-    creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-    creator.create("Individual", list, fitness=creator.FitnessMin)
 
     # We define evaluation matrix
     def eval_matrix(gamma):
@@ -55,18 +56,12 @@ def algorithm_cma(sigma, mu, esg, dt, penalization_weight, ngen):
 
     # The CMA-ES algorithm takes a population of one individual as argument
     strategy = cma.Strategy(centroid=centroid, sigma=dt, lambda_=20*n)
-    toolbox.register("generate", strategy.generate, creator.Individual)
+    toolbox.register("generate", strategy.generate, creator.IndividualCMA)
     toolbox.register("update", strategy.update)
 
     hof = tools.HallOfFame(1)
-    stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("avg", np.mean)
-    stats.register("std", np.std)
-    stats.register("min", np.min)
-    stats.register("max", np.max)
 
-    algorithms.eaGenerateUpdate(
-        toolbox, ngen=ngen, stats=stats, halloffame=hof, verbose=False)
+    algorithms.eaGenerateUpdate(toolbox, ngen=ngen, halloffame=hof)
 
     w_p = hof[0][:-1]
     w_p = map_from_auxiliary_coordinates(w_p)
@@ -81,4 +76,9 @@ def algorithm_cma(sigma, mu, esg, dt, penalization_weight, ngen):
 
 
 if __name__ == "__main__":
-    pass
+    sigma, mu, esg = get_data_by_index(0)
+
+    w_p, w_s = algorithm_cma(
+        sigma, mu, esg, 1.0, 1000, 100)
+
+    metrics = 

@@ -10,7 +10,12 @@ from deap import creator
 from deap import tools
 
 
-def algorithm_nsga2(sigma, mu, esg,
+creator.create("FitnessMinNSGA2", base.Fitness, weights=(-1.0,))
+creator.create("IndividualNSGA2", array.array, typecode='d',
+               fitness=creator.FitnessMinNSGA2)
+
+
+def algorithm_nsga2(sigma, mu, esg, pop_size, cxpb, eta,
                     penalization_weight, ngen):
 
     (n, m) = esg.shape
@@ -20,11 +25,8 @@ def algorithm_nsga2(sigma, mu, esg,
     centroid = map_to_auxiliary_coordinates(centroid)
     centroid = np.append(centroid, np.random.rand())
 
-    creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-    creator.create("Individual", array.array, typecode='d',
-                   fitness=creator.FitnessMin)
-
     # We define evaluation matrix
+
     def eval_matrix(gamma):
         return gamma * sigma - mu@mu.T
 
@@ -51,9 +53,9 @@ def algorithm_nsga2(sigma, mu, esg,
         return abs(res) + p
 
     BOUND_LOW, BOUND_UP = 0.0, 1.0
-    ETA = 20.0
-    POPULATION_SIZE = 100
-    CXPB = 0.9
+    ETA = eta
+    POPULATION_SIZE = pop_size
+    CXPB = cxpb
     NDIM = n
 
     def uniform(low, up, size=None):
@@ -65,14 +67,14 @@ def algorithm_nsga2(sigma, mu, esg,
     toolbox = base.Toolbox()
     toolbox.register("attr_float", uniform, BOUND_LOW, BOUND_UP, NDIM)
     toolbox.register("individual", tools.initIterate,
-                     creator.Individual, toolbox.attr_float)
+                     creator.IndividualNSGA2, toolbox.attr_float)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
     toolbox.register("evaluate", evaluate)
     toolbox.register("mate", tools.cxSimulatedBinaryBounded,
-                     low=BOUND_LOW, up=BOUND_UP, eta=20.0)
+                     low=BOUND_LOW, up=BOUND_UP, eta=ETA)
     toolbox.register("mutate", tools.mutPolynomialBounded,
-                     low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=1.0/NDIM)
+                     low=BOUND_LOW, up=BOUND_UP, eta=ETA, indpb=1.0/NDIM)
     toolbox.register("select", tools.selNSGA2)
 
     pop = toolbox.population(n=POPULATION_SIZE)

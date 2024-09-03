@@ -3,7 +3,7 @@
 ## Estrategias
 
  - MV (mean - variance)
- - SRO (sharpe ration opitmization) -> Todos los algoritmos propuestos optimizan primero el ratio de sharpe
+ - SRO (sharpe ration optimization) -> Todos los algoritmos propuestos optimizan primero el ratio de sharpe
  - GMR (global maximum return)  -> maxReturn.py
  - GMV (global minimum variance)  -> minRisk.py
  - SSD (second-order stochastic dominance)

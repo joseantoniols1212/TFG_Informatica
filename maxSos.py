@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     sigma, mu, esg = get_data_by_index(0)
 
-    w_p, w_s = maxSos(esg, 1000, 0.25, 300, False)
+    w_p, w_s = maxSos(sigma, mu, esg, 1000, 1, 200)
 
     return_ = w_p@mu
     risk = w_p@sigma@w_p
@@ -91,3 +91,5 @@ if __name__ == "__main__":
     print("ESG rating: ", esg_rating)
     print("Norma w_p:", np.linalg.norm(w_p, 1))
     print("Norma w_s:", np.linalg.norm(w_s, 1))
+    print("w_p:", w_p)
+    print("w_s:", w_s)

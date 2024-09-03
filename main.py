@@ -22,24 +22,28 @@ maxReturn_params = {}
 minRisk_params = {}
 maxSos_params = {
     "penalization_weight": 1000,
-    "dt": 0.25,
-    "ngen": 500
+    "dt": 1.5,
+    "ngen": 300
 }
 cma_params = {
     "penalization_weight": 1000,
-    "dt": 0.25,
-    "ngen": 500
+    "dt": 1.5,
+    "ngen": 300
 }
 nsga2_params = {
+    "pop_size": 100,
+    "cxpb": 0.9,
+    "eta": 20.,
     "penalization_weight": 1000,
-    "ngen": 500
+    "ngen": 300
 }
 pso_params = {
-    "abs_speed_max": 0.1,
+    "pop_size": 100,
+    "abs_speed_max": 0.25,
     "penalization_weight": 1000,
     "phi1": 1.0,
     "phi2": 1.0,
-    "ngen": 500
+    "ngen": 300
 }
 
 strategies = [
@@ -59,7 +63,8 @@ print("====================================")
 
 np.random.seed(0)
 
-comparison = PortfolioComparison(assets, strategies)
+comparison = PortfolioComparison(assets, strategies).compare()
+print(comparison)
 comparison.to_csv('results.csv')
 
 print("====================================")

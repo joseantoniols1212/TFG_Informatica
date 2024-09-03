@@ -1,6 +1,16 @@
 import numpy as np
 import pandas as pd
 from utils import get_data_by_index
+import sys
+
+
+def imprimir_barra_progreso(iteracion, total, longitud=50):
+    progreso = iteracion / total
+    bloque = int(longitud * progreso)
+    barra = '█' * bloque + '-' * (longitud - bloque)
+    porcentaje = progreso * 100
+    sys.stdout.write(f'\r|{barra}| {porcentaje:.2f}%')
+    sys.stdout.flush()
 
 
 class Portfolio:
@@ -42,6 +52,12 @@ class Metrics:
         w_s = self.portfolio.w_s
         esg = self.assets.esg
         return w_p@esg@w_s
+
+    def wp_norm(self):
+        return np.linalg.norm(self.portfolio.w_p, 1)
+
+    def ws_norm(self):
+        return np.linalg.norm(self.portfolio.w_s, 1)
 
     def report(self):
         print("Sharpe ratio: ", self.sharpe_ratio())
@@ -95,11 +111,9 @@ class PortfolioComparison:
                 result['Grupo'] = i
                 result['Estrategia'] = j
                 results.append(result)
+                imprimir_barra_progreso(
+                    j+i*len(assets), len(self.assets) * len(self.strategies))
         return pd.DataFrame(results)
-
-    def to_csv(self, filename):
-        df = self.compare()
-        df.to_csv(filename, index=False)
 
 
 if __name__ == "__main__":
@@ -120,4 +134,4 @@ if __name__ == "__main__":
     ]
 
     comparison = PortfolioComparison([assets0, assets1], strategies)
-    comparison.to_csv('comparison_results.csv')
+    comparison.to_csv('comparison_results.csv', index=False)

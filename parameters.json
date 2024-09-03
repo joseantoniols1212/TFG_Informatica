@@ -1,0 +1,11 @@
+{"cma":[
+{"dt": 5.0, "penalization_weight": 325.0, "ngen": 100},
+{"dt": 1.118888888888889, "penalization_weight": 600.0, "ngen": 50},
+{"dt": 2.0833333333333335, "penalization_weight": 1000.0, "ngen": 150},
+{"dt": 0.25, "penalization_weight": 500.0, "ngen": 200}
+],
+"pso": [[{"abs_speed_max": 0.25, "penalization_weight": 1000, "phi1": 1.4000000000000001, "phi2": 0.6000000000000001, "ngen": 100}, 598.3215789936781],
+[{"abs_speed_max": 0.23333333333333334, "penalization_weight": 1000, "phi1": 1.3636363636363638, "phi2": 0.8181818181818182, "ngen": 100}, 601.7362330362313],
+],
+"nsga2": []
+}
