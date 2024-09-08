@@ -4,7 +4,6 @@ from utils import get_data_by_index
 
 
 def minRisk(sigma, mu, esg):
-
     (n, m) = esg.shape
     w_s = np.zeros(m)
 

@@ -7,19 +7,21 @@ from deap import cma
 from deap import creator
 from deap import tools
 
+# Max
+creator.create("FitnessMaxSos", base.Fitness, weights=(1.0,))
+creator.create("IndividualMaxSos", list, fitness=creator.FitnessMaxSos)
 
-def maxSos(sigma, mu, esg, penalization_weight, dt, ngen):
+
+def maxSos(sigma, mu, esg, var, penalization_weight, ngen):
     (n, m) = esg.shape
-    w_s = np.random.rand(m-1)
+    w_s = np.random.rand(m)
     w_s = w_s / np.linalg.norm(w_s, 1)
-    w_p = np.random.rand(n-1)
+    w_s = w_s[:-1]
+    w_p = np.random.rand(n)
     w_p = w_p / np.linalg.norm(w_p, 1)
+    w_p = w_p[:-1]
 
     w = np.append(w_p, w_s)
-
-    # Max
-    creator.create("FitnessMax", base.Fitness, weights=(1.0,))
-    creator.create("Individual", list, fitness=creator.FitnessMax)
 
     def penalization(ind):
         """ Penalizes portfolios not summing up to one."""
@@ -54,19 +56,13 @@ def maxSos(sigma, mu, esg, penalization_weight, dt, ngen):
 
     toolbox = base.Toolbox()
     toolbox.register("evaluate", evaluate)
-    strategy = cma.Strategy(centroid=w, sigma=dt, lambda_=20*(m+m))
-    toolbox.register("generate", strategy.generate, creator.Individual)
+    strategy = cma.Strategy(centroid=w, sigma=var)
+    toolbox.register("generate", strategy.generate, creator.IndividualMaxSos)
     toolbox.register("update", strategy.update)
 
     hof = tools.HallOfFame(1)
-    stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("avg", np.mean)
-    stats.register("std", np.std)
-    stats.register("min", np.min)
-    stats.register("max", np.max)
-
     algorithms.eaGenerateUpdate(
-        toolbox, ngen=ngen, stats=stats, halloffame=hof, verbose=False)
+        toolbox, ngen=ngen, halloffame=hof, verbose=False)
 
     w_p = hof[0][:n-1]
     w_p = map_from_auxiliary_coordinates(w_p)
@@ -80,7 +76,7 @@ if __name__ == "__main__":
 
     sigma, mu, esg = get_data_by_index(0)
 
-    w_p, w_s = maxSos(sigma, mu, esg, 1000, 1, 200)
+    w_p, w_s = maxSos(sigma, mu, esg, 1000, 1., 200)
 
     return_ = w_p@mu
     risk = w_p@sigma@w_p

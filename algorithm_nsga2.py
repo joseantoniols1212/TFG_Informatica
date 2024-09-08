@@ -15,17 +15,10 @@ creator.create("IndividualNSGA2", array.array, typecode='d',
                fitness=creator.FitnessMinNSGA2)
 
 
-def algorithm_nsga2(sigma, mu, esg, pop_size, cxpb, eta,
-                    penalization_weight, ngen):
+def algorithm_nsga2(sigma, mu, esg, pop_size, penalization_weight, ngen):
 
     (n, m) = esg.shape
     mu = np.atleast_2d(mu).T
-    centroid = np.random.rand(n)
-    centroid = centroid / np.linalg.norm(centroid, 1)
-    centroid = map_to_auxiliary_coordinates(centroid)
-    centroid = np.append(centroid, np.random.rand())
-
-    # We define evaluation matrix
 
     def eval_matrix(gamma):
         return gamma * sigma - mu@mu.T
@@ -53,9 +46,9 @@ def algorithm_nsga2(sigma, mu, esg, pop_size, cxpb, eta,
         return abs(res) + p
 
     BOUND_LOW, BOUND_UP = 0.0, 1.0
-    ETA = eta
+    ETA = 20.
     POPULATION_SIZE = pop_size
-    CXPB = cxpb
+    CXPB = 0.9
     NDIM = n
 
     def uniform(low, up, size=None):

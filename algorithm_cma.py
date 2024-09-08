@@ -1,7 +1,6 @@
 import numpy as np
 from utils import get_data_by_index, \
     map_from_auxiliary_coordinates, map_to_auxiliary_coordinates
-from metrics import *
 
 from deap import algorithms
 from deap import base
@@ -15,7 +14,7 @@ creator.create("FitnessMinCMA", base.Fitness, weights=(-1.0,))
 creator.create("IndividualCMA", list, fitness=creator.FitnessMinCMA)
 
 
-def algorithm_cma(sigma, mu, esg, dt, penalization_weight, ngen):
+def algorithm_cma(sigma, mu, esg, var, penalization_weight, ngen):
 
     (n, m) = esg.shape
     mu = np.atleast_2d(mu).T
@@ -28,9 +27,7 @@ def algorithm_cma(sigma, mu, esg, dt, penalization_weight, ngen):
     def eval_matrix(gamma):
         return gamma * sigma - mu@mu.T
 
-    def penalization(ind):
-        """ Penalizes portfolios not summing up to one."""
-        w = ind
+    def penalization(w):
         norm = np.linalg.norm(w, 1)
         penalization = 0
         if norm > 1:
@@ -50,25 +47,21 @@ def algorithm_cma(sigma, mu, esg, dt, penalization_weight, ngen):
         res = (w.T@h@w)[0]
         return abs(res) + p
 
-    # We register the evaluation function
     toolbox = base.Toolbox()
     toolbox.register("evaluate", evaluate)
 
-    # The CMA-ES algorithm takes a population of one individual as argument
-    strategy = cma.Strategy(centroid=centroid, sigma=dt, lambda_=20*n)
+    strategy = cma.Strategy(centroid=centroid, sigma=var)
     toolbox.register("generate", strategy.generate, creator.IndividualCMA)
     toolbox.register("update", strategy.update)
 
     hof = tools.HallOfFame(1)
 
-    algorithms.eaGenerateUpdate(toolbox, ngen=ngen, halloffame=hof)
+    algorithms.eaGenerateUpdate(toolbox, ngen=ngen, halloffame=hof, verbose=False)
 
     w_p = hof[0][:-1]
     w_p = map_from_auxiliary_coordinates(w_p)
-    # gamma_0 = hof[0][-1]
 
     index_max = np.argmax(w_p.T@esg)
-
     w_s = np.zeros(m)
     w_s[index_max] = 1
 
@@ -78,7 +71,4 @@ def algorithm_cma(sigma, mu, esg, dt, penalization_weight, ngen):
 if __name__ == "__main__":
     sigma, mu, esg = get_data_by_index(0)
 
-    w_p, w_s = algorithm_cma(
-        sigma, mu, esg, 1.0, 1000, 100)
-
-    metrics = 
+    w_p, w_s = algorithm_cma(sigma, mu, esg, 1.0, 1000, 100)

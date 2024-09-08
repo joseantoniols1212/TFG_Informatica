@@ -32,10 +32,7 @@ class Metrics:
         self.assets = assets
 
     def sharpe_ratio(self):
-        w_p = self.portfolio.w_p
-        sigma = self.assets.sigma
-        mu = self.assets.mu
-        return (w_p@mu)/(w_p@sigma@w_p)**0.5
+        return self.returns()/(self.risk()**0.5)
 
     def returns(self):
         w_p = self.portfolio.w_p
@@ -52,6 +49,11 @@ class Metrics:
         w_s = self.portfolio.w_s
         esg = self.assets.esg
         return w_p@esg@w_s
+
+    def diversification_ratio(self):
+        w_p = self.portfolio.w_p
+        dt = np.diagonal(self.assets.sigma)
+        return (w_p@dt.T)/(self.risk)**0.5
 
     def wp_norm(self):
         return np.linalg.norm(self.portfolio.w_p, 1)
@@ -96,24 +98,39 @@ class PortfolioOptimizer:
         return Metrics(self.portfolio, self.assets)
 
 
-class PortfolioComparison:
+class PortfolioComparator:
     def __init__(self, assets_list, strategies):
         self.assets_list = assets_list
         self.strategies = strategies
+        self.portfolios = None
 
     def compare(self):
         results = []
+        portfolios = []
         for i, assets in enumerate(self.assets_list):
             for j, (strategy, params) in enumerate(self.strategies):
                 optimizer = PortfolioOptimizer(assets, strategy, **params)
+                portfolios.append(optimizer.portfolio)
                 metrics = optimizer.metrics()
                 result = metrics.to_dict()
-                result['Grupo'] = i
-                result['Estrategia'] = j
+                result['Grupo'] = i+1
+                result['Estrategia'] = strategy.__name__
                 results.append(result)
                 imprimir_barra_progreso(
-                    j+i*len(assets), len(self.assets) * len(self.strategies))
+                    j+i*len(self.assets_list), len(self.assets_list) * len(self.strategies))
+        self.portfolios = portfolios
         return pd.DataFrame(results)
+
+    def get_portfolios(self):
+        if self.portfolios is None:
+            self.portfolios = self.compare()
+        return self.portfolios
+
+    def save_portfolios(self):
+        if self.portfolios is None:
+            self.portfolios = self.compare()
+        for (portfolio, (strategy, _)) in zip(self.portfolios, self.strategies):
+            np.save(f'./optimized_portfolios/{strategy.__name__}', portfolio)
 
 
 if __name__ == "__main__":
@@ -133,5 +150,7 @@ if __name__ == "__main__":
         (dummy_strategy, {'param2': 2}),
     ]
 
-    comparison = PortfolioComparison([assets0, assets1], strategies)
-    comparison.to_csv('comparison_results.csv', index=False)
+    comparator = PortfolioComparator([assets0, assets1], strategies)
+    df = comparator.compare()
+    comparator.save_portfolios()
+    df.to_csv('comparison_results.csv', index=False)

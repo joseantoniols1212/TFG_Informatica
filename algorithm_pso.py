@@ -16,7 +16,7 @@ creator.create("Particle", np.ndarray,
                fitness=creator.FitnessMinPSO, speed=list, best=None)
 
 
-def algorithm_pso(sigma, mu, esg, pop_size, abs_speed_max, penalization_weight, phi1, phi2, ngen):
+def algorithm_pso(sigma, mu, esg, pop_size, abs_speed_max, phi1, phi2, penalization_weight, ngen):
 
     (n, m) = esg.shape
     mu = np.atleast_2d(mu).T
@@ -77,8 +77,7 @@ def algorithm_pso(sigma, mu, esg, pop_size, abs_speed_max, penalization_weight, 
     toolbox = base.Toolbox()
     toolbox.register("particle", generate, size=n)
     toolbox.register("population", tools.initRepeat, list, toolbox.particle)
-    toolbox.register("update", updateParticle, phi1=2.0,
-                     phi2=2.0)  # TODO: Revisar phi
+    toolbox.register("update", updateParticle, phi1=phi1, phi2=phi2)
     toolbox.register("evaluate", evaluate)
 
     pop = toolbox.population(n=population_size)

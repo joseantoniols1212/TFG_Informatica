@@ -27,18 +27,11 @@ def imprimir_barra_progreso(iteracion, total, longitud=80):
 
 
 def algorithm_nsga2_pareto(sigma, mu, esg,
-                           pop_size, cxpb, eta, penalization_weight, ngen):
+                           pop_size, penalization_weight, ngen):
     (n, m) = esg.shape
     mu = np.atleast_2d(mu).T
-    wp = np.random.rand(n)
-    wp = wp / np.linalg.norm(wp, 1)
-    wp = map_to_auxiliary_coordinates(wp)
-    ws = np.random.rand(m)
-    ws = ws / np.linalg.norm(wp, 1)
-    ws = map_to_auxiliary_coordinates(wp)
 
     def penalization(ind):
-        """ Penalizes portfolios not summing up to one."""
         wp = ind[:n]
         ws = ind[n:]
         norm_wp = np.linalg.norm(wp, 1)
@@ -64,15 +57,15 @@ def algorithm_nsga2_pareto(sigma, mu, esg,
         ws = map_from_auxiliary_coordinates(ws)
         wp = np.atleast_2d(wp).T
         ws = np.atleast_2d(ws).T
-        risk = wp.T@sigma@wp + p
+        risk = (wp.T@sigma@wp)**0.5 + p
         return_ = wp.T@mu - p
         esg_score = wp.T@esg@ws - p
         return risk[0][0], return_[0][0], esg_score[0][0]
 
     BOUND_LOW, BOUND_UP = 0.0, 1.0
-    ETA = eta
+    ETA = 20.
     POPULATION_SIZE = pop_size
-    CXPB = cxpb
+    CXPB = 0.9
     NDIM = n+m-2
 
     def uniform(low, up, size=None):
@@ -144,7 +137,7 @@ if __name__ == "__main__":
 
     np.random.seed(0)
     pareto = algorithm_nsga2_pareto(
-        sigma, mu, esg, pop_size=200, cxpb=0.9, eta=20, penalization_weight=1000, ngen=500)
+        sigma, mu, esg, pop_size=200, penalization_weight=1000, ngen=500)
     pareto_front = np.array([ind.fitness.values for ind in pareto])
 
-    np.save(f'./pareto_fronts/pareto_front_{index}', pareto_front)
+    np.save(f'./pareto_fronts/nsga2_pareto_front_{index}', pareto_front)

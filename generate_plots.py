@@ -3,7 +3,8 @@ import numpy as np
 import sys
 
 index = int(sys.argv[1])
-pareto_front = np.load(f'./pareto_fronts/pareto_front_{index}.npy')
+algorithm = sys.argv[2]
+pareto_front = np.load(f'./pareto_fronts/{algorithm}_pareto_front_{index}.npy')
 
 x = pareto_front[:, 0]
 y = pareto_front[:, 1]
