@@ -8,6 +8,8 @@ from deap import cma
 from deap import creator
 from deap import tools
 
+from metrics import *
+
 # We define problem class
 # Minimization
 creator.create("FitnessMinCMA", base.Fitness, weights=(-1.0,))
@@ -69,6 +71,19 @@ def algorithm_cma(sigma, mu, esg, var, penalization_weight, ngen):
 
 
 if __name__ == "__main__":
+    VAR = 0.01
+    NGEN = 1500
+
+    print(VAR)
+    print(NGEN)
+
     sigma, mu, esg = get_data_by_index(0)
 
-    w_p, w_s = algorithm_cma(sigma, mu, esg, 1.0, 1000, 100)
+    assets = Assets(sigma, mu, esg)
+
+    w_p, w_s = algorithm_cma(sigma, mu, esg, VAR, 1000, NGEN)
+
+    portfolio = Portfolio(w_p, w_s)
+    metrics = Metrics(portfolio, assets)
+
+    metrics.report()

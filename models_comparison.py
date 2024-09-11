@@ -3,9 +3,9 @@ import numpy as np
 from metrics import Assets, PortfolioComparator
 from utils import get_data_by_index
 
-from algorithm_nsga2 import algorithm_nsga2
-from algorithm_cma import algorithm_cma
-from algorithm_pso import algorithm_pso
+from algorithm_nsga2_2 import algorithm_nsga2
+from algorithm_cma_2 import algorithm_cma
+from algorithm_pso_2 import algorithm_pso
 
 from naive import naive
 from maxSos import maxSos
@@ -15,8 +15,8 @@ from maxDiv import maxDiv
 
 import random
 
-N = 7
-NGEN = 1000
+N = 8
+NGEN = 200
 PENALIZATION = 1000
 
 assets = []
@@ -26,12 +26,8 @@ for i in range(N):
 naive_params = {}
 maxReturn_params = {}
 minRisk_params = {}
+maxSos_params = {}
 maxDiv_params = {
-    "penalization_weight": PENALIZATION,
-    "var": 0.3,
-    "ngen": NGEN
-}
-maxSos_params = {
     "penalization_weight": PENALIZATION,
     "var": 0.3,
     "ngen": NGEN
@@ -47,8 +43,8 @@ nsga2_params = {
     "ngen": NGEN
 }
 pso_params = {
-    "pop_size": 100,
-    "abs_speed_max": 0.25,
+    "pop_size": 200,
+    "abs_speed_max": 0.01,
     "phi1": 1.75,
     "phi2": 1.5,
     "penalization_weight": PENALIZATION,

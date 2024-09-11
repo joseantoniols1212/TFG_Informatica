@@ -8,6 +8,8 @@ from deap import cma
 from deap import creator
 from deap import tools
 
+from metrics import *
+
 # Max
 creator.create("FitnessMaxDiv", base.Fitness, weights=(1.0,))
 creator.create("IndividualDiv", list, fitness=creator.FitnessMaxDiv)
@@ -19,14 +21,9 @@ def maxDiv(sigma, mu, esg, var, penalization_weight, ngen):
     centroid = np.random.rand(n)
     centroid = centroid / np.linalg.norm(centroid, 1)
     centroid = centroid[:-1]
-    centroid = np.append(centroid, np.random.rand())
 
     dt = np.diagonal(sigma)
     dt = np.atleast_2d(dt).T
-
-    # We define evaluation matrix
-    def eval_matrix(gamma):
-        return gamma * sigma - dt@dt.T
 
     def penalization(w):
         norm = np.linalg.norm(w, 1)
@@ -39,20 +36,18 @@ def maxDiv(sigma, mu, esg, var, penalization_weight, ngen):
         return penalization
 
     def evaluate(ind):
-        w = ind[:-1]
-        gamma = ind[-1]
+        w = ind
         p = penalization(w)
         w = map_from_auxiliary_coordinates(w)
         w = np.atleast_2d(w).T
-        h = eval_matrix(gamma)
-        res = (w.T@h@w)[0]
-        return abs(res) + p
+        res = (w.T@dt / (w.T@sigma@w)**0.5)[0]
+        return res - p
 
     toolbox = base.Toolbox()
     toolbox.register("evaluate", evaluate)
 
     strategy = cma.Strategy(centroid=centroid, sigma=var)
-    toolbox.register("generate", strategy.generate, creator.IndividualCMA)
+    toolbox.register("generate", strategy.generate, creator.IndividualDiv)
     toolbox.register("update", strategy.update)
 
     hof = tools.HallOfFame(1)
@@ -60,7 +55,7 @@ def maxDiv(sigma, mu, esg, var, penalization_weight, ngen):
     algorithms.eaGenerateUpdate(
         toolbox, ngen=ngen, halloffame=hof, verbose=False)
 
-    w_p = hof[0][:-1]
+    w_p = hof[0]
     w_p = map_from_auxiliary_coordinates(w_p)
 
     index_max = np.argmax(w_p.T@esg)
@@ -73,4 +68,11 @@ def maxDiv(sigma, mu, esg, var, penalization_weight, ngen):
 if __name__ == "__main__":
     sigma, mu, esg = get_data_by_index(0)
 
+    assets = Assets(sigma, mu, esg)
+
     w_p, w_s = maxDiv(sigma, mu, esg, 1.0, 1000, 100)
+
+    portfolio = Portfolio(w_p, w_s)
+    metrics = Metrics(portfolio, assets)
+
+    metrics.report()

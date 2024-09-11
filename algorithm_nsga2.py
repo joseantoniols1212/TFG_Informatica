@@ -45,7 +45,7 @@ def algorithm_nsga2(sigma, mu, esg, pop_size, penalization_weight, ngen):
         res = (w.T@h@w)[0]
         return abs(res) + p
 
-    BOUND_LOW, BOUND_UP = 0.0, 1.0
+    BOUND_LOW, BOUND_UP = 0., 1.
     ETA = 20.
     POPULATION_SIZE = pop_size
     CXPB = 0.9

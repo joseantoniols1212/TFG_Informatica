@@ -110,10 +110,11 @@ class PortfolioComparator:
         for i, assets in enumerate(self.assets_list):
             for j, (strategy, params) in enumerate(self.strategies):
                 optimizer = PortfolioOptimizer(assets, strategy, **params)
-                portfolios.append(optimizer.portfolio)
+                portfolios.append(
+                    (optimizer.portfolio, i, strategy.__name__))
                 metrics = optimizer.metrics()
                 result = metrics.to_dict()
-                result['Grupo'] = i+1
+                result['Grupo'] = i
                 result['Estrategia'] = strategy.__name__
                 results.append(result)
                 imprimir_barra_progreso(
@@ -129,8 +130,9 @@ class PortfolioComparator:
     def save_portfolios(self):
         if self.portfolios is None:
             self.portfolios = self.compare()
-        for (portfolio, (strategy, _)) in zip(self.portfolios, self.strategies):
-            np.save(f'./optimized_portfolios/{strategy.__name__}', portfolio)
+        for (portfolio, grupo, strategy_name) in self.portfolios:
+            np.save(
+                f'./optimized_portfolios/{strategy_name}_grupo_{grupo}', portfolio)
 
 
 if __name__ == "__main__":

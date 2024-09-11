@@ -1,6 +1,5 @@
-cro
 deap
 numpy
 pandas
-multiprocess
 cvxpy
+matplotlib
