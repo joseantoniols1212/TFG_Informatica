@@ -16,5 +16,5 @@
 
 ## Librerias usadas
 
-Deap: libreria para el diseño de algoritmos geneticos y evolutivos
-cvxpy: libreria para resolver problemas de optimizacion convexa
+- Deap: libreria para el diseño de algoritmos geneticos y evolutivos
+- cvxpy: libreria para resolver problemas de optimizacion convexa
